@@ -21,6 +21,7 @@ public struct RingBufferIterator<T>: IteratorProtocol {
 
 // TODO: Conform to ExpressibleByArrayLiteral
 // TODO: consider `position`, `tail`
+// TODO: conform to Queue protocol
 
 /// The buffer is always 'full', non-resizable.
 /// https://en.wikipedia.org/wiki/Circular_buffer
@@ -60,12 +61,20 @@ extension RingBuffer: Sequence {
 }
 
 extension RingBuffer: Collection {
+    private func wrap(_ i: Int) -> Int {
+        if appendPosition < capacity {
+            return i
+        } else {
+            return (i + appendPosition) % capacity
+        }
+    }
+
     public var startIndex: Int {
         return 0
     }
 
     public var endIndex: Int {
-        return elements.count
+        return count
     }
 
     public func index(after i: Int) -> Int {
@@ -76,9 +85,14 @@ extension RingBuffer: Collection {
     public subscript(i: Int) -> Element {
         get {
             precondition((startIndex..<endIndex).contains(i), "Index out of bounds")
-            return elements[(i + count - 1) % capacity]!
+            return elements[wrap(i)]!
         }
     }
+}
 
-    // TODO: first, last, [-index]
+extension RingBuffer: BidirectionalCollection {
+    public func index(before i: Int) -> Int {
+        precondition(i > 0)
+        return i - 1
+    }
 }

@@ -41,4 +41,47 @@ class RingBufferTests: XCTestCase {
         
         XCTAssertEqual(sum, 8)
     }
+
+    func testCollection() {
+        var buffer = RingBuffer<Int>(repeating: 0, count: 2)
+
+        buffer.append(9)
+
+        XCTAssertEqual(buffer.first, 9)
+        XCTAssertEqual(buffer.last, 9)
+
+        buffer.append(3)
+
+        XCTAssertEqual(buffer.first, 9)
+        XCTAssertEqual(buffer.last, 3)
+
+        buffer.append(5)
+
+        XCTAssertEqual(buffer.first, 3)
+        XCTAssertEqual(buffer.last, 5)
+
+        buffer.append(12)
+
+        XCTAssertEqual(buffer.first, 5)
+        XCTAssertEqual(buffer.last, 12)
+    }
+
+    func testCollection3() {
+        var buffer = RingBuffer<Int>(repeating: 0, count: 3)
+
+        buffer.append(9)
+
+        XCTAssertEqual(buffer.first, 9)
+        XCTAssertEqual(buffer.last, 9)
+
+        buffer.append(3)
+
+        XCTAssertEqual(buffer.first, 9)
+        XCTAssertEqual(buffer.last, 3)
+
+        buffer.append(5)
+
+        XCTAssertEqual(buffer.first, 9)
+        XCTAssertEqual(buffer.last, 5)
+    }
 }

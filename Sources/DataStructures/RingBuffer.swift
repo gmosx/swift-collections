@@ -69,7 +69,11 @@ extension RingBuffer: Collection {
         if appendPosition < capacity {
             return i
         } else {
-            return (i + appendPosition) % capacity
+            // startBufferIndex = (appendPosition % capacity)
+            // index = (startBufferIndex + i) % capacity
+            // index = ((appendPosition % capacity) + i) % capacity
+            // index = (appendPosition + i) % capacity
+            return (appendPosition + i) % capacity
         }
     }
 

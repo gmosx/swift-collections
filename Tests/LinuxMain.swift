@@ -1,5 +1,5 @@
 import XCTest
-@testable import DataStructuresTests
+@testable import CollectionsTests
 
 XCTMain([
      testCase(RingBufferTests.allTests),

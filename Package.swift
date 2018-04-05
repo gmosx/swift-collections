@@ -3,24 +3,24 @@
 import PackageDescription
 
 let package = Package(
-    name: "DataStructures",
+    name: "Collections",
     products: [
         .library(
-            name: "DataStructures",
-            targets: ["DataStructures"]
+            name: "Collections",
+            targets: ["Collections"]
         ),
     ],
     dependencies: [
     ],
     targets: [
         .target(
-            name: "DataStructures",
+            name: "Collections",
             dependencies: [
             ]
         ),
         .testTarget(
-            name: "DataStructuresTests",
-            dependencies: ["DataStructures"]
+            name: "CollectionsTests",
+            dependencies: ["Collections"]
         ),
     ]
 )

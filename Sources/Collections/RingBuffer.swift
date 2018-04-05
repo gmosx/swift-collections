@@ -1,14 +1,13 @@
 // TODO: Conform to ExpressibleByArrayLiteral
 // TODO: consider `position`, `tail`
 // TODO: conform to Queue protocol
-// TODO: add isFull
 // TODO: what about value/reference semantics? COW?
 
 /// https://en.wikipedia.org/wiki/Circular_buffer
 /// http://www.boost.org/doc/libs/1_39_0/libs/circular_buffer/doc/circular_buffer.html
 public struct RingBuffer<T> {
     private var elements: [T?]
-    private var appendPosition = 0 // TODO: somehow expose this.
+    private var appendPosition = 0
 
     public init(count: Int) {
         self.elements = [T?](repeating: nil, count: count)
@@ -30,7 +29,7 @@ public struct RingBuffer<T> {
         return appendPosition
     }
 
-    public var isFull: Bool {
+    public var isFull: Bool { // TODO: better name?
         return capacity < totalCount
     }
     
@@ -71,7 +70,7 @@ extension RingBuffer: Sequence {
 
 extension RingBuffer: Collection {
     private func wrap(_ i: Int) -> Int {
-        if appendPosition < capacity {
+        if totalCount < capacity {
             return i
         } else {
             // startBufferIndex = (appendPosition % capacity)
@@ -100,7 +99,6 @@ extension RingBuffer: Collection {
             precondition((startIndex..<endIndex).contains(i), "Index out of bounds")
             return elements[wrap(i)]!
         }
-        // TODO: add set
     }
 }
 

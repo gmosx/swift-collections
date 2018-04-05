@@ -1,4 +1,5 @@
 # Collections
+![Build status](https://travis-ci.org/reizu/swift-collections.svg?branch=master)
 
 A library of useful collection protocols and corresponding implementations.
 

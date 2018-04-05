@@ -52,8 +52,8 @@ public struct RingBuffer<T> {
         return appendPosition
     }
 
-    public var isFull: Bool { // TODO: better name?
-        return capacity < totalCount
+    public var isFull: Bool {
+        return capacity <= totalCount
     }
 
     public mutating func append(_ element: T) {
@@ -72,7 +72,7 @@ extension RingBuffer: Sequence {
 
 extension RingBuffer: Collection {
     private func wrap(_ i: Int) -> Int {
-        if isFull {
+        if capacity < totalCount {
             // startBufferIndex = (appendPosition % capacity)
             // index = (startBufferIndex + i) % capacity
             // index = ((appendPosition % capacity) + i) % capacity

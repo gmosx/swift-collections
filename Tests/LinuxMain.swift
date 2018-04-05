@@ -2,5 +2,5 @@ import XCTest
 import CollectionsTests
 
 var tests = [XCTestCaseEntry]()
-tests += RingBufferTests.allTests()
+tests += CollectionTests.allTests()
 XCTMain(tests)

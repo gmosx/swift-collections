@@ -1,10 +1,33 @@
+// https://en.wikipedia.org/wiki/Circular_buffer
+// http://www.boost.org/doc/libs/1_39_0/libs/circular_buffer/doc/circular_buffer.html
+
+public struct RingBufferIterator<T>: IteratorProtocol {
+    public typealias Element = T
+
+    let ringBuffer: RingBuffer<T>
+    var position: Int
+
+    init(_ ringBuffer: RingBuffer<T>) {
+        self.ringBuffer = ringBuffer
+        self.position = ringBuffer.startIndex
+    }
+
+    public mutating func next() -> T? {
+        if (position < ringBuffer.endIndex) {
+            let value = ringBuffer[position]
+            position = ringBuffer.index(after: position)
+            return value
+        } else {
+            return nil
+        }
+    }
+}
+
 // TODO: Conform to ExpressibleByArrayLiteral
 // TODO: consider `position`, `tail`
 // TODO: conform to Queue protocol
 // TODO: what about value/reference semantics? COW?
 
-/// https://en.wikipedia.org/wiki/Circular_buffer
-/// http://www.boost.org/doc/libs/1_39_0/libs/circular_buffer/doc/circular_buffer.html
 public struct RingBuffer<T> {
     private var elements: [T?]
     private var appendPosition = 0
@@ -41,28 +64,6 @@ public struct RingBuffer<T> {
 
 extension RingBuffer: Sequence {
     public typealias Element = T
-
-    public struct RingBufferIterator<T>: IteratorProtocol {
-        public typealias Element = T
-
-        let ringBuffer: RingBuffer<T>
-        var position: Int
-
-        init(_ ringBuffer: RingBuffer<T>) {
-            self.ringBuffer = ringBuffer
-            self.position = ringBuffer.startIndex
-        }
-
-        public mutating func next() -> T? {
-            if (position < ringBuffer.endIndex) {
-                let value = ringBuffer[position]
-                position = ringBuffer.index(after: position)
-                return value
-            } else {
-                return nil
-            }
-        }
-    }
 
     public func makeIterator() -> RingBufferIterator<T> {
         return RingBufferIterator<T>(self)

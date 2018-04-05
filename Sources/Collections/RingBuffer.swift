@@ -46,16 +46,17 @@ extension RingBuffer: Sequence {
         public typealias Element = T
 
         let ringBuffer: RingBuffer<T>
-        var position: Int = 0
+        var position: Int
 
         init(_ ringBuffer: RingBuffer<T>) {
             self.ringBuffer = ringBuffer
+            self.position = ringBuffer.startIndex
         }
 
         public mutating func next() -> T? {
-            if (position < ringBuffer.count) {
+            if (position < ringBuffer.endIndex) {
                 let value = ringBuffer[position]
-                position += 1
+                position = ringBuffer.index(after: position)
                 return value
             } else {
                 return nil
@@ -70,14 +71,14 @@ extension RingBuffer: Sequence {
 
 extension RingBuffer: Collection {
     private func wrap(_ i: Int) -> Int {
-        if totalCount < capacity {
-            return i
-        } else {
+        if isFull {
             // startBufferIndex = (appendPosition % capacity)
             // index = (startBufferIndex + i) % capacity
             // index = ((appendPosition % capacity) + i) % capacity
             // index = (appendPosition + i) % capacity
             return (appendPosition + i) % capacity
+        } else {
+            return i
         }
     }
 
@@ -90,13 +91,13 @@ extension RingBuffer: Collection {
     }
 
     public func index(after i: Int) -> Int {
-        precondition(i < endIndex)
+        assert(i < endIndex)
         return i + 1
     }
 
     public subscript(i: Int) -> Element {
         get {
-            precondition((startIndex..<endIndex).contains(i), "Index out of bounds")
+            // precondition((startIndex..<endIndex).contains(i), "Index out of bounds")
             return elements[wrap(i)]!
         }
     }
@@ -104,7 +105,7 @@ extension RingBuffer: Collection {
 
 extension RingBuffer: BidirectionalCollection {
     public func index(before i: Int) -> Int {
-        precondition(i > 0)
+        assert(i > 0)
         return i - 1
     }
 }

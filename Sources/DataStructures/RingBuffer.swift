@@ -22,8 +22,8 @@ public struct RingBufferIterator<T>: IteratorProtocol {
 // TODO: Conform to ExpressibleByArrayLiteral
 // TODO: consider `position`, `tail`
 // TODO: conform to Queue protocol
+// TODO: add isFull
 
-/// The buffer is always 'full', non-resizable.
 /// https://en.wikipedia.org/wiki/Circular_buffer
 /// http://www.boost.org/doc/libs/1_39_0/libs/circular_buffer/doc/circular_buffer.html
 public struct RingBuffer<T> {
@@ -44,6 +44,10 @@ public struct RingBuffer<T> {
     
     public var count: Int {
         return Swift.min(appendPosition, capacity)
+    }
+
+    public var totalCount: Int { // TODO: better name? accoumulatedCount
+        return appendPosition
     }
     
     public mutating func append(_ element: T) {
@@ -87,6 +91,7 @@ extension RingBuffer: Collection {
             precondition((startIndex..<endIndex).contains(i), "Index out of bounds")
             return elements[wrap(i)]!
         }
+        // TODO: add set
     }
 }
 

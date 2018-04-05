@@ -15,6 +15,7 @@ class RingBufferTests: XCTestCase {
         buffer.append(6)
 
         XCTAssertEqual(buffer.count, 3)
+        XCTAssertEqual(buffer.totalCount, 5)
     }
     
     func testCircularBehavior() {

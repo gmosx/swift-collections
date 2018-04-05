@@ -8,7 +8,7 @@ class RingBufferTests: XCTestCase {
         buffer.append(9)
         buffer.append(3)
         
-        XCTAssertEqual(buffer.count, 3)
+        XCTAssertEqual(buffer.count, 2)
 
         buffer.append(4)
         buffer.append(5)

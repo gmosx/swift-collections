@@ -87,4 +87,12 @@ class RingBufferTests: XCTestCase {
         XCTAssertEqual(buffer.first, 9)
         XCTAssertEqual(buffer.last, 5)
     }
+
+    static var allTests = [
+        ("testCount", testCount),
+        ("testCircularBehavior", testCircularBehavior),
+        ("testIteration", testIteration),
+        ("testCollection", testCollection),
+        ("testCollection3", testCollection3),
+    ]
 }

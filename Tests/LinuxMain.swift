@@ -1,6 +1,7 @@
 import XCTest
-@testable import CollectionsTests
 
-XCTMain([
-     testCase(RingBufferTests.allTests),
-])
+import CollectionsTests
+
+var tests = [XCTestCaseEntry]()
+tests += RingBufferTests.allTests()
+XCTMain(tests)

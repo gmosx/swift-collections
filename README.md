@@ -1,6 +1,6 @@
 # Collections
 
-A library of collections to compliment the standard library.
+A library of useful collection protocols and corresponding implementations.
 
 ## License
 

@@ -12,7 +12,7 @@ public struct RingBuffer<T> {
     public init(count: Int) {
         self.elements = [T?](repeating: nil, count: count)
     }
-    
+
     public init(repeating: T, count: Int) {
         self.elements = [T?](repeating: repeating, count: count)
     }
@@ -20,9 +20,9 @@ public struct RingBuffer<T> {
     public var capacity: Int {
         return elements.capacity
     }
-    
+
     public var count: Int {
-        return Swift.min(appendPosition, capacity)
+        return isFull ? capacity : totalCount
     }
 
     public var totalCount: Int { // TODO: better name? accoumulatedCount
@@ -32,7 +32,7 @@ public struct RingBuffer<T> {
     public var isFull: Bool { // TODO: better name?
         return capacity < totalCount
     }
-    
+
     public mutating func append(_ element: T) {
         elements[appendPosition % capacity] = element
         appendPosition += 1

@@ -22,12 +22,12 @@ public struct RingBufferIterator<T>: IteratorProtocol {
 /// The buffer is always 'full', non-resizable.
 /// https://en.wikipedia.org/wiki/Circular_buffer
 /// http://www.boost.org/doc/libs/1_39_0/libs/circular_buffer/doc/circular_buffer.html
-public struct RingBuffer<T>: Sequence {
+public struct RingBuffer<T> {
     private var elements: [T?]
     private var appendPosition = 0
 
-    public init(capacity: Int) {
-        self.elements = [T?](repeating: nil, count: capacity)
+    public init(count: Int) {
+        self.elements = [T?](repeating: nil, count: count)
     }
     
     public init(repeating: T, count: Int) {
@@ -61,11 +61,11 @@ public struct RingBuffer<T>: Sequence {
         return nil // TODO: implement me
     }
     
-    // MARK: Sequence conformance
-    
+    // TODO: first, last, [-index]
+}
+
+extension RingBuffer: Sequence {
     public func makeIterator() -> RingBufferIterator<T> {
         return RingBufferIterator(self)
     }
-    
-    // TODO: first, last, [-index]
 }

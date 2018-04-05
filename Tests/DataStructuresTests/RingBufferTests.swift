@@ -16,6 +16,8 @@ class RingBufferTests: XCTestCase {
 
         XCTAssertEqual(buffer.count, 3)
         XCTAssertEqual(buffer.totalCount, 5)
+
+        XCTAssertTrue(buffer.isFull)
     }
     
     func testCircularBehavior() {

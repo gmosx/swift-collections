@@ -1,28 +1,8 @@
-public struct RingBufferIterator<T>: IteratorProtocol {
-    public typealias Element = T
-    
-    let ringBuffer: RingBuffer<T>
-    var position: Int = 0
-    
-    init(_ ringBuffer: RingBuffer<T>) {
-        self.ringBuffer = ringBuffer
-    }
-    
-    public mutating func next() -> T? {
-        if (position < ringBuffer.count) {
-            let value = ringBuffer[position]
-            position += 1
-            return value
-        } else {
-            return nil
-        }
-    }
-}
-
 // TODO: Conform to ExpressibleByArrayLiteral
 // TODO: consider `position`, `tail`
 // TODO: conform to Queue protocol
 // TODO: add isFull
+// TODO: what about value/reference semantics? COW?
 
 /// https://en.wikipedia.org/wiki/Circular_buffer
 /// http://www.boost.org/doc/libs/1_39_0/libs/circular_buffer/doc/circular_buffer.html
@@ -49,6 +29,10 @@ public struct RingBuffer<T> {
     public var totalCount: Int { // TODO: better name? accoumulatedCount
         return appendPosition
     }
+
+    public var isFull: Bool {
+        return capacity < totalCount
+    }
     
     public mutating func append(_ element: T) {
         elements[appendPosition % capacity] = element
@@ -59,8 +43,29 @@ public struct RingBuffer<T> {
 extension RingBuffer: Sequence {
     public typealias Element = T
 
+    public struct RingBufferIterator<T>: IteratorProtocol {
+        public typealias Element = T
+
+        let ringBuffer: RingBuffer<T>
+        var position: Int = 0
+
+        init(_ ringBuffer: RingBuffer<T>) {
+            self.ringBuffer = ringBuffer
+        }
+
+        public mutating func next() -> T? {
+            if (position < ringBuffer.count) {
+                let value = ringBuffer[position]
+                position += 1
+                return value
+            } else {
+                return nil
+            }
+        }
+    }
+
     public func makeIterator() -> RingBufferIterator<T> {
-        return RingBufferIterator(self)
+        return RingBufferIterator<T>(self)
     }
 }
 

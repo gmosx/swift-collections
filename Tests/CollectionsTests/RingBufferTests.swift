@@ -38,9 +38,7 @@ class RingBufferTests: XCTestCase {
         buffer.append(3)
         buffer.append(5)
 
-        let sum = buffer.reduce(0) {
-            sum, x in sum + x
-        }
+        let sum = buffer.reduce(0, +)
 
         XCTAssertEqual(sum, 8)
     }

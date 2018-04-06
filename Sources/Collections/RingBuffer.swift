@@ -15,7 +15,7 @@ public struct RingBufferIterator<T>: IteratorProtocol {
     public mutating func next() -> T? {
         if (position < ringBuffer.endIndex) {
             let value = ringBuffer[position]
-            position = ringBuffer.index(after: position)
+            position += 1
             return value
         } else {
             return nil
@@ -27,25 +27,22 @@ public struct RingBufferIterator<T>: IteratorProtocol {
 // TODO: consider `position`, `tail`
 // TODO: conform to Queue protocol
 // TODO: what about value/reference semantics? COW?
+// TODO: position -> index?
 
 public struct RingBuffer<T> {
-    private var elements: [T?]
+    private var elements: [T]
     private var appendPosition = 0
-
-    public init(count: Int) {
-        self.elements = [T?](repeating: nil, count: count)
-    }
+    public let capacity: Int
 
     public init(repeating: T, count: Int) {
-        self.elements = [T?](repeating: repeating, count: count)
-    }
+        self.elements = [T](repeating: repeating, count: count)
+        self.capacity = count
 
-    public var capacity: Int {
-        return elements.capacity
+        elements.reserveCapacity(count)
     }
 
     public var count: Int {
-        return isFull ? capacity : totalCount
+        return Swift.min(capacity, totalCount)
     }
 
     public var totalCount: Int { // TODO: better name? accoumulatedCount
@@ -73,10 +70,6 @@ extension RingBuffer: Sequence {
 extension RingBuffer: Collection {
     private func wrap(_ i: Int) -> Int {
         if capacity < totalCount {
-            // startBufferIndex = (appendPosition % capacity)
-            // index = (startBufferIndex + i) % capacity
-            // index = ((appendPosition % capacity) + i) % capacity
-            // index = (appendPosition + i) % capacity
             return (appendPosition + i) % capacity
         } else {
             return i
@@ -99,7 +92,7 @@ extension RingBuffer: Collection {
     public subscript(i: Int) -> Element {
         get {
             // precondition((startIndex..<endIndex).contains(i), "Index out of bounds")
-            return elements[wrap(i)]!
+            return elements[wrap(i)]
         }
     }
 }

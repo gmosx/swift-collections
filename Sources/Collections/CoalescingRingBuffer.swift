@@ -1,2 +1,3 @@
-public class CoalescingRingBuffer {
+public struct CoalescingRingBuffer {
+    // TODO: Implement me!
 }

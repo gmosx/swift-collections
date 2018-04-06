@@ -7,14 +7,18 @@ A library of useful collection protocols and corresponding implementations.
 
 ### RingBuffer
 
+A `RingBuffer` retains the last `n` appended values, where `n` is equal to the
+`capacity` of the buffer.
+
 ```
-var buffer = RingBuffer<Int>(count: 2)
+var buffer = RingBuffer<Int>(repeating: 0, count: 2)
+buffer.count                  // == 2
 buffer.append(2)
 buffer.append(3)
 buffer.append(4)
-buffer.count                  // == 2
-buffer.totalCount             // == 3
+buffer.count                  // == 5
 let sum = buffer.reduce(0, +) // == 7
+buffer.first                  // == 3
 ```
 
 ## License

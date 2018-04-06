@@ -1,8 +1,8 @@
 // https://en.wikipedia.org/wiki/Circular_buffer
 // http://www.boost.org/doc/libs/1_39_0/libs/circular_buffer/doc/circular_buffer.html
 
-/// A specialized buffer that retain the last `n` appended values, where `n` is equal
-/// to the `capacity` of the buffer. This buffer is always 'full'.
+/// A RingBuffer retains the last `n` appended values, where `n` is equal to the
+/// `capacity` of the buffer. This buffer is always 'full'.
 public struct RingBuffer<T> {
     private var elements: [T]
     private var appendPosition = 0

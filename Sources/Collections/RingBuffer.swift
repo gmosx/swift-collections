@@ -7,7 +7,7 @@ public struct RingBuffer<T> {
     private var elements: [T]
     private var appendPosition = 0
 
-    public init<S>(_ sequence: S) where S : Sequence, Element == S.Element {
+    public init<S>(_ sequence: S) where S: Sequence, Element == S.Element {
         elements = Array(sequence)
         appendPosition = elements.count
     }

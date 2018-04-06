@@ -96,5 +96,6 @@ class RingBufferTests: XCTestCase {
         ("testIteration", testIteration),
         ("testCollection", testCollection),
         ("testCollection3", testCollection3),
+        ("testExpressibleByArrayLiteral", testExpressibleByArrayLiteral),
     ]
 }

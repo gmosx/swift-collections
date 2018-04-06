@@ -8,16 +8,13 @@ class RingBufferTests: XCTestCase {
         buffer.append(9)
         buffer.append(3)
 
-        XCTAssertEqual(buffer.count, 2)
+        XCTAssertEqual(buffer.count, 3)
 
         buffer.append(4)
         buffer.append(5)
         buffer.append(6)
 
         XCTAssertEqual(buffer.count, 3)
-        XCTAssertEqual(buffer.totalCount, 5)
-
-        XCTAssertTrue(buffer.isFull)
     }
 
     func testCircularBehavior() {
@@ -48,7 +45,7 @@ class RingBufferTests: XCTestCase {
 
         buffer.append(9)
 
-        XCTAssertEqual(buffer.first, 9)
+        XCTAssertEqual(buffer.first, 0)
         XCTAssertEqual(buffer.last, 9)
 
         buffer.append(3)
@@ -72,18 +69,25 @@ class RingBufferTests: XCTestCase {
 
         buffer.append(9)
 
-        XCTAssertEqual(buffer.first, 9)
+        XCTAssertEqual(buffer.first, 0)
         XCTAssertEqual(buffer.last, 9)
 
         buffer.append(3)
 
-        XCTAssertEqual(buffer.first, 9)
+        XCTAssertEqual(buffer.first, 0)
         XCTAssertEqual(buffer.last, 3)
 
         buffer.append(5)
 
         XCTAssertEqual(buffer.first, 9)
         XCTAssertEqual(buffer.last, 5)
+    }
+
+    func testExpressibleByArrayLiteral() {
+        let buffer: RingBuffer<Int> = [1, 2, 3]
+
+        XCTAssertEqual(buffer.capacity, 3)
+        XCTAssertEqual(buffer.count, 3)
     }
 
     static var allTests = [
